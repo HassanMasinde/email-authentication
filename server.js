@@ -12,22 +12,17 @@ require('dotenv').config();
 
 app.set('view engine', 'ejs');
 
-const connectToMongoDb = () => {
-  mongoose
-    .connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDb..'))
-    .catch((error) => {
-      console.log('Error in connecting to mongoDB ' + error);
-      throw error;
-    });
-};
-connectToMongoDb();
+// Update the MongoDB connection string with your actual database name
+mongoose.connect('mongodb://localhost:27017/your-database-name', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(
   session({
+    secret: 'aHs2#dV9$lQpZ3!vE5tY', // Replace with your secret key
     resave: false,
     saveUninitialized: true,
-    secret: process.env.SESSION_SECRET,
   })
 );
 
@@ -52,3 +47,4 @@ app.use('/protected', protectedRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('App listening on port ' + port));
+

@@ -9,9 +9,9 @@ require('dotenv').config();
 passport.use(
   new FacebookStrategy(
     {
-      clientID: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_SECRET_KEY,
-      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      clientID: '783594323397-r2lcfsp1dgif35e8hv003br77stv2pfn.apps.googleusercontent.com', // Replace with your Facebook App's client ID
+      clientSecret: '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', // Replace with your Facebook App's client secret
+      callbackURL: 'http://localhost:3000/auth/facebook/callback', // Replace with your Facebook App's callback URL
     },
     async function (accessToken, refreshToken, profile, cb) {
       const user = await User.findOne({
@@ -19,18 +19,16 @@ passport.use(
         provider: 'facebook',
       });
       if (!user) {
-        console.log('Adding new facebook user to DB..');
-        const user = new User({
+        console.log('Adding new Facebook user to DB..');
+        const newUser = new User({
           accountId: profile.id,
           name: profile.displayName,
-          provider: profile.provider,
+          provider: 'facebook',
         });
-        await user.save();
-        // console.log(user);
+        await newUser.save();
         return cb(null, profile);
       } else {
-        console.log('Facebook User already exist in DB..');
-        // console.log(profile);
+        console.log('Facebook User already exists in DB..');
         return cb(null, profile);
       }
     }
@@ -59,17 +57,18 @@ router.get('/success', async (req, res) => {
   res.render('fb-github-success', { user: userInfo });
 });
 
-router.get('/error', (req, res) => res.send('Error logging in via Facebook..'));
+router.get('/error', (req, res) => res.send('Error logging in via Facebook...'));
 
 router.get('/signout', (req, res) => {
   try {
     req.session.destroy(function (err) {
-      console.log('session destroyed.');
+      console.log('Session destroyed.');
     });
     res.render('auth');
   } catch (err) {
-    res.status(400).send({ message: 'Failed to sign out fb user' });
+    res.status(400).send({ message: 'Failed to sign out Facebook user' });
   }
 });
 
 module.exports = router;
+

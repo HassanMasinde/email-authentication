@@ -3,15 +3,18 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const express = require('express');
 const googleAuth = require('../dal/google-auth.dal');
 const router = express.Router();
-require('dotenv').config();
+
+const GOOGLE_CLIENT_ID = '783594323397-r2lcfsp1dgif35e8hv003br77stv2pfn.apps.googleusercontent.com';
+const GOOGLE_CLIENT_SECRET = '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';
+const CALLBACK_URL = 'http://localhost:3000/auth/google/callback';
 
 let userProfile;
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL,
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, done) {
       userProfile = profile;
@@ -20,26 +23,23 @@ passport.use(
   )
 );
 
-// request at /auth/google, when user click sign-up with google button transferring
-// the request to google server, to show emails screen
 router.get(
   '/',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// URL Must be same as 'Authorized redirect URIs' field of OAuth client, i.e: /auth/google/callback
 router.get(
   '/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google/error' }),
   (req, res) => {
-    res.redirect('/auth/google/success'); // Successful authentication, redirect success.
+    res.redirect('/auth/google/success');
   }
 );
 
 router.get('/success', async (req, res) => {
   const { failure, success } = await googleAuth.registerWithGoogle(userProfile);
-  if (failure) console.log('Google user already exist in DB..');
-  else console.log('Registering new Google user..');
+  if (failure) console.log('Google user already exists in the DB..');
+  else console.log('Registering a new Google user..');
   res.render('success', { user: userProfile });
 });
 
@@ -48,12 +48,13 @@ router.get('/error', (req, res) => res.send('Error logging in via Google..'));
 router.get('/signout', (req, res) => {
   try {
     req.session.destroy(function (err) {
-      console.log('session destroyed.');
+      console.log('Session destroyed.');
     });
     res.render('auth');
   } catch (err) {
-    res.status(400).send({ message: 'Failed to sign out user' });
+    res.status(400).send({ message: 'Failed to sign out the user' });
   }
 });
 
 module.exports = router;
+

@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -12,35 +12,55 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <title>Social Auth</title>
+    <title>Climate Wavers</title>
     <style>
       body {
         padding-top: 70px;
+      }
+      .google-button {
+        background-color: #4285f4; /* Google Blue */
+        color: #fff;
+      }
+      .facebook-button {
+        background-color: #1877f2; /* Facebook Blue */
+        color: #fff;
+      }
+      .github-button {
+        background-color: #24292e;
+        color: #fff;
+      }
+      .climate-wavers-button {
+        background-color: #000; /* Black */
+        color: #000; /* Black */
+      }
+      .climate-wavers-text {
+        color: #000; /* Black */
+      }
+      .fa-lock {
+        color: #000; /* Black */
       }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="jumbotron text-center text-primary">
-        <h1><span class="fa fa-lock"></span> Social Authentication</h1>
+        <h1><span class="fa fa-lock"></span> <span class="climate-wavers-text">Climate Wavers</span></h1>
         <p>Login or Register with:</p>
-        <a href="/auth/google" class="btn btn-danger"
-          ><span class="fa fa-google"></span> Sign Up with Google</a
+        <a href="/auth/google" class="btn google-button"
+          ><span style="color: #4285f4;" class="fa fa-google"></span> Sign Up with Google</a
         >
         <br />
         <br />
-
-        <a href="/auth/facebook" class="btn btn-warning"
-          ><span class="fa fa-facebook"></span> Sign Up with Facebook</a
+        <a href="/auth/facebook" class "btn facebook-button"
+          ><span style="color: #1877f2;" class="fa fa-facebook"></span> Sign Up with Facebook</a
         >
-
         <br />
         <br />
-
-        <a href="/auth/github" class="btn btn-dark"
+        <a href="/auth/github" class="btn github-button"
           ><span class="fa fa-github"></span> Sign Up with Github</a
         >
       </div>
     </div>
   </body>
 </html>
+
